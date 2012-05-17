@@ -1,0 +1,66 @@
+
+/* AjaxSearch Sample CSS for default install */
+
+
+/* ajaxSearch styles */
+/* --------------------------------------------- */
+
+/* main container */
+#ajaxSearch{
+	display: none;
+	position: absolute;
+	top:30px;
+	right:0;
+	z-index:100;
+	width:300px;
+	background-color: #fff;
+	border: 1px solid #000;
+	box-shadow: 0 6px 6px -2px #555;
+	max-height:650px;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+/* inner container */
+#ajaxSearch .ajaxSearch_body{
+	padding: 2.5em 1em 1em 1em;
+}
+
+/* ajax loader anim (om search input field) */
+.ajaxSearch_loader{ background: #fff url(images/ajax-loader.gif) 185px center no-repeat!important; }
+
+.ajaxSearch_close{ 
+	float:right;
+	margin:0.5em;
+	overflow:hidden;
+}
+
+
+/* optional basic result styling */
+/* --------------------------------------------- */
+
+#ajaxSearch a {
+		color: #f00076; 
+	}
+		#ajaxSearch a:hover {
+			background-color: #f00076; 
+			color: #fff; 
+			text-decoration: none; 
+		}
+#ajaxSearch ul.nav { }
+
+#ajaxSearch ul.nav li {
+	display: block;
+	list-style: none; 
+	margin: 0;
+	border-bottom: 1px dotted #ccc; 
+}
+	#ajaxSearch ul.nav li a {
+		font-family: "Helvetica Neue", Arial, sans-serif; 
+		font-weight: bold; 
+		margin: 0;
+	}
+
+	#ajaxSearch ul.nav li p {
+		margin: 1em 0;
+	}
+

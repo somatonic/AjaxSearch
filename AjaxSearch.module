@@ -1,0 +1,133 @@
+<?php
+
+/**
+ * AjaxSearch 1.0.0 - ProcessWire module
+ *
+ * @author Philipp "Soma" Urlich
+ * @created 17/05/2012
+ * @last_modified 17/05/2012
+ * 
+ * ProcessWire 2.x 
+ * Copyright (C) 2010 by Ryan Cramer 
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ * 
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ */
+
+class AjaxSearch extends WireData implements Module,ConfigurableModule {
+
+	protected static $defaults = array(
+		'as_minLength' => 3,
+		'as_close_text' => 'close',
+		'as_search_form' => '#search_form',
+		'as_search_input' => '#search_query',
+		'as_query_name' => 'q',
+		'as_query_url' => ''
+	);
+
+	/**
+	 * getModuleInfo is a module required by all modules to tell ProcessWire about them
+	 *
+	 * @return array
+	 *
+	 */
+	public static function getModuleInfo() {
+
+		return array(
+			'title' => 'Ajax Search',
+			'version' => 100, 
+			'summary' => 'Progressively enhances the search form on a website',
+			'autoload' => true
+			);
+	}
+
+	public function init() {
+		//$this->config->styles->add($this->config->urls->PageListImageLabel . "PageListImageLabel.css");
+		$this->addHookAfter('Page::render', $this, 'addScripts');
+	}
+	
+	public function addScripts( HookEvent $event ) {
+		$page = $event->object;
+		if($page->template->name == "admin") return;
+
+		// build config for passing to js using json
+		$options = self::$defaults;
+		foreach($options as $key => $unused) {
+			$options[$key] = $this->get($key) ? $this->get($key) : $options[$key];
+		}
+		$config = json_encode($options);
+		$script = "\n<script>var as_config = $config;</script>";
+
+		$script .= "\n<script src='{$this->config->urls->AjaxSearch}AjaxSearch.js'></script>";
+		
+		$event->return = str_replace("</body>","$script</body>",$event->return);
+	}
+
+	
+	/**
+	 * Build a form allowing configuration of this Module
+	 *
+	 */
+	static public function getModuleConfigInputfields(array $data) {
+
+		$data = array_merge(self::$defaults, $data);
+
+		$fields = new InputfieldWrapper();
+		$modules = Wire::getFuel("modules");
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'as_minLength');
+		$field->attr('size', 10);
+		$field->attr('value', $data['as_minLength']);
+		$field->label = "Minimun length";
+		$field->description = "The mininum character length required to start the ajax search.";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'as_close_text');
+		$field->attr('size', 10);
+		$field->attr('value', $data['as_close_text']);
+		$field->label = "Close label";
+		$field->description = "Label text for close link.";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'as_search_form');
+		$field->attr('size', 15);
+		$field->attr('value', $data['as_search_form']);
+		$field->label = "Search form";
+		$field->description = "Class or id of the search form.";
+		$field->notes = "Example: #mysearch_form";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'as_search_input');
+		$field->attr('size', 15);
+		$field->attr('value', $data['as_search_input']);
+		$field->label = "Search form inputfield";
+		$field->description = "Class or id of the search input field.";
+		$field->notes = "Example: #mysearch_query";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'as_query_name');
+		$field->attr('size', 15);
+		$field->attr('value', $data['as_query_name']);
+		$field->label = "Query param name"; 
+		$field->description = "Name of the param that will be sent in the get request.";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldText");
+		$field->attr('name', 'as_query_url');
+		$field->attr('size', 45);
+		$field->attr('value', $data['as_query_url']);
+		$field->label = "Query URL"; 
+		$field->description = "Optional you can specify a different ajax request URL. Specify the url absolute from the root of site url. By default (if left blank) the script will take the search forms action URL to perform the request.";
+		$field->notes = "Example: /tools/search";
+		$fields->append($field);
+
+		return $fields;
+	}
+}
