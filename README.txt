@@ -1,9 +1,13 @@
-ProcessWire AjaxSearch 1.0.0
+ProcessWire AjaxSearch 1.1.0
 ============================
 
-This module progressively enhances the search form to an ajax live search. It will perform a search like you would use the form normally, and returns the output of the search page. So the search will still work without js enabled. 
+This module progressively enhances the search form to an ajax live search. It will perform a search like you would use the form normally, and returns the output of the search page. So the search will still work without js enabled.
 There's some basic styling attached to this module in the "styling-example". You can use it to get started. See readme in there.
 
+Added in 1.1.0
+- added key support for browsing results with arrow down and up.
+- added escape key to close results.
+- added close results on click outside
 
 Setup the search.php
 ----------------------------
@@ -12,11 +16,11 @@ So it works almost out of the box with the basic install profile of ProcessWire,
 
 To get the ajax search only return the content, open search.php and change the output on the bottom to this:
 
-if(!$config->ajax) include("./head.inc"); 
+if(!$config->ajax) include("./head.inc");
 
-echo $out; 
+echo $out;
 
-if(!$config->ajax) include("./foot.inc"); 
+if(!$config->ajax) include("./foot.inc");
 
 
 Module Settings
