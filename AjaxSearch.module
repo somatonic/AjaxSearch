@@ -37,7 +37,7 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 
 		return array(
 			'title' => 'Ajax Search',
-			'version' => 100,
+			'version' => 110,
 			'summary' => 'Progressively enhances the search form on a website',
 			'autoload' => true
 			);
@@ -48,8 +48,6 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 		$this->addHookAfter('Page::render', $this, 'addScripts');
 	}
 
-	/**
-	 *
 	public function addScripts( HookEvent $event ) {
 		$page = $event->object;
 		if($page->template->name == "admin") return;
@@ -67,7 +65,7 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 		$event->return = str_replace("</body>","$script</body>",$event->return);
 	}
 
-	$this->addScripts
+
 	/**
 	 * Build a form allowing configuration of this Module
 	 *
