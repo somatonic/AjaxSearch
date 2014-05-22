@@ -37,7 +37,7 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 
 		return array(
 			'title' => 'Ajax Search',
-			'version' => 110,
+			'version' => 111,
 			'summary' => 'Progressively enhances the search form on a website',
 			'autoload' => true
 			);

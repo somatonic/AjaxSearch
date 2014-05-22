@@ -92,7 +92,7 @@ $(function(){
 		.attr({'autocomplete':'off'}); // disables autocomplete in certain browsers
 
 		$('.ajaxSearch_close')
-			.live('click',function(){
+			.on('click',function(){
 				$(this).closest('#ajaxSearch').fadeOut();
 			});
 	}

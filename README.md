@@ -1,4 +1,4 @@
-# ProcessWire AjaxSearch 1.1.0
+# ProcessWire AjaxSearch 1.1.1
 
 This module progressively enhances the search form to an ajax live search. It will perform a search like you would use the form normally, and returns the output of the search page. So the search will still work without js enabled.
 There's some basic styling attached to this module in the "styling-example". You can use it to get started. See readme in there.
