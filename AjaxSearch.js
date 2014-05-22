@@ -1,4 +1,3 @@
-
 /* ajaxSearch - progressive enhanced processwire search */
 
 $(function(){
