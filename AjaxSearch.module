@@ -24,7 +24,8 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 		'as_search_form' => '#search_form',
 		'as_search_input' => '#search_query',
 		'as_query_name' => 'q',
-		'as_query_url' => ''
+		'as_query_url' => '',
+		'add_script' => true
 	);
 
 	/**
@@ -37,15 +38,22 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 
 		return array(
 			'title' => 'Ajax Search',
-			'version' => 111,
+			'version' => 112,
 			'summary' => 'Progressively enhances the search form on a website',
-			'autoload' => true
+			'autoload' => "template!=admin"
 			);
 	}
 
+	public function __construct(){
+		foreach(self::$defaults as $key => $val){
+			$this->set($key, $val);
+		}
+	}
+
+
 	public function init() {
-		//$this->config->styles->add($this->config->urls->PageListImageLabel . "PageListImageLabel.css");
-		$this->addHookAfter('Page::render', $this, 'addScripts');
+		// build config for passing to js using json
+		if($this->add_script) $this->addHookAfter('Page::render', $this, 'addScripts');
 	}
 
 	public function addScripts( HookEvent $event ) {
@@ -59,9 +67,7 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 		}
 		$config = json_encode($options);
 		$script = "\n<script>var as_config = $config;</script>";
-
 		$script .= "\n<script src='{$this->config->urls->AjaxSearch}AjaxSearch.js'></script>";
-
 		$event->return = str_replace("</body>","$script</body>",$event->return);
 	}
 
@@ -126,6 +132,15 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 		$field->label = "Query URL";
 		$field->description = "Optional you can specify a different ajax request URL. Specify the url absolute from the root of site url. By default (if left blank) the script will take the search forms action URL to perform the request.";
 		$field->notes = "Example: /tools/search";
+		$fields->append($field);
+
+		$field = $modules->get("InputfieldCheckbox");
+		$field->attr('name', 'add_script');
+		$field->attr('value', 1);
+		$field->attr('checked', $data["add_script"] ? "checked" : "");
+		$field->label = "JS Script";
+		$field->description = "Turn off automatic script injecting. Instead you can load the AjaxSearch.js that comes with this module manually to your front-end markup.";
+		$field->notes = 'If you turn this off, you\'ll need to output the config vars used by AjaxSearch.js before the script include like: <?php echo "<script>var as_config =" . json_encode($modules->AjaxSearch->data) . "<script>"?>';
 		$fields->append($field);
 
 		return $fields;
