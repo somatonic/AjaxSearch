@@ -87,8 +87,8 @@ class AjaxSearch extends WireData implements Module,ConfigurableModule {
 		$field->attr('name', 'as_minLength');
 		$field->attr('size', 10);
 		$field->attr('value', $data['as_minLength']);
-		$field->label = "Minimun length";
-		$field->description = "The mininum character length required to start the ajax search.";
+		$field->label = "Minimum length";
+		$field->description = "The minimum character length required to start the ajax search.";
 		$fields->append($field);
 
 		$field = $modules->get("InputfieldText");
